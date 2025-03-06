@@ -27,35 +27,56 @@ const faqs = [
     answer:
       "Locavore franzen fashion axe live-edge neutra irony synth af tilde shabby chic man braid chillwave waistcoat copper mug messenger bag. Banjo snackwave blog, microdosing thundercats migas vaporware viral lo-fi seitan",
   },
-  {
-    question: "What is JSX?",
-    answer:
-      "JSX is a syntax extension for JavaScript that looks similar to XML or HTML.",
-  },
 ];
 
 function Accordian() {
-  const [openIndex, setOpenIndex] = useState(null);
+  const [openIndices, setOpenIndices] = useState([]);
+  const [isMultiOpenAllowed, setIsMultiOpenAllowed] = useState(false);
+
+  const toggleAccordion = (index) => {
+    if (isMultiOpenAllowed) {
+      if (openIndices.includes(index)) {
+        setOpenIndices(openIndices.filter((i) => i !== index));
+      } else {
+        setOpenIndices([...openIndices, index]);
+      }
+    } else {
+      setOpenIndices(openIndices.includes(index) ? [] : [index]);
+    }
+  };
 
   return (
-    <>
+    <div className="accordian">
+      {/* Checkbox to toggle multi-open mode */}
+      <label>
+        <input
+          type="checkbox"
+          checked={isMultiOpenAllowed}
+          onChange={() => setIsMultiOpenAllowed(!isMultiOpenAllowed)}
+        />
+        Is multiple open accordion allowed?
+      </label>
+
+      {/* Accordion Items */}
       {faqs.map((faq, index) => (
         <div key={index} className="faq-item">
           <div className="question">
             <h3>{faq.question}</h3>
             <button
-              onClick={() => setOpenIndex(openIndex === index ? null : index)}
+              onClick={() => toggleAccordion(index)}
               className="accordian-icon"
             >
-              {openIndex === index ? "-" : "+"}
+              {openIndices.includes(index) ? "-" : "+"}
             </button>
           </div>
-          <div className={openIndex === index ? "answer" : "answer hidden"}>
+          <div
+            className={openIndices.includes(index) ? "answer" : "answer hidden"}
+          >
             <p>{faq.answer}</p>
           </div>
         </div>
       ))}
-    </>
+    </div>
   );
 }
 

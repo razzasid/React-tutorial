@@ -12,6 +12,13 @@
   /* border: 2px solid green; */
 }
 
+label{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 2em;
+}
 .question {
   display: flex;
   align-items: center;
