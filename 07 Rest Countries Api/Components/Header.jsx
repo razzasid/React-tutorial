@@ -1,7 +1,15 @@
 import { useState } from "react";
 
 function Header() {
-  const [isDark, setIsDark] = useState(false);
+  const [isDark, setIsDark] = useState(
+    JSON.parse(localStorage.getItem("isDarkMode"))
+  );
+
+  if (isDark) {
+    document.body.classList.add("dark");
+  } else {
+    document.body.classList.remove("dark");
+  }
 
   return (
     <header className="header-container">
@@ -12,8 +20,8 @@ function Header() {
         <p
           className="theme-changer"
           onClick={() => {
-            document.body.classList.toggle("dark");
             setIsDark(!isDark);
+            localStorage.setItem("isDarkMode", !isDark);
           }}
         >
           <i className={`fa-solid fa-${isDark ? "sun" : "moon"}`}></i>
