@@ -1,13 +1,14 @@
-import { useEffect, useState } from "react";
-import { Link, useLocation, useOutletContext, useParams } from "react-router";
+import { useContext, useEffect, useState } from "react";
+import { Link, useLocation,  useParams } from "react-router";
 import "./CountryDetail.css";
 import Loader from "./Loader";
+import { ThemeContext } from "../contexts/ThemeContext.js";
 
 function CountryDetail() {
   // const countryName = new URLSearchParams(location.search).get("name");
   const params = useParams();
   const countryName = params.country;
-  const [isDark] = useOutletContext();
+  const [isDark] = useContext(ThemeContext);
 
   function updateCountryData(data) {
     setCountryData({
@@ -44,7 +45,7 @@ function CountryDetail() {
   }
 
   const { state } = useLocation();
-  console.log(state);
+  // console.log(state);
 
   const [countryData, setCountryData] = useState(null);
   const [notFound, setNotFound] = useState(false);

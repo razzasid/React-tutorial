@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useContext } from "react";
+import { ThemeContext } from "../contexts/ThemeContext.js";
 
-function Header({ theme }) {
-  const [isDark, setIsDark] = theme;
+function Header() {
+  const [isDark, setIsDark] = useContext(ThemeContext);
 
   // if (isDark) {
   //   document.body.classList.add("dark");
