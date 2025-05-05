@@ -1,25 +1,33 @@
-.shimmer {
-  height: 350px;
-  background: rgb(173, 173, 173);
-  box-shadow: 0 0 0 0;
+main .shimmer-card {
+  --shimmer-color: hsl(0, 0%, 78%);
 }
 
-@keyframes shimmer {
-  0% {
-    background-position: -200px 0;
-  }
-  100% {
-    background-position: 200px 0;
-  }
+main.dark .shimmer-card {
+  --shimmer-color: hsl(208, 21%, 34%);
 }
 
-.loading {
-  background: linear-gradient(90deg, #aaaaaa 25%, #cccccc 50%, #aaaaaa 75%);
-  background-size: 200% 100%;
-  animation: shimmer 1.5s infinite linear;
+
+.shimmer-card {
+  height: 338px;
+  background-color: var(--elements-color);
 }
-.loading {
-  background: linear-gradient(90deg, #aaaaaa 25%, #cccccc 50%, #aaaaaa 75%);
-  background-size: 200% 100%;
-  animation: shimmer 1.5s infinite linear;
+
+.shimmer-card .flag-container {
+  background-color: var(--shimmer-color);
+}
+
+.shimmer-card .card-title {
+  height: 32px;
+  background-color: var(--shimmer-color);
+  border-radius: 4px;
+}
+
+.shimmer-card p {
+  height: 22px;
+  border-radius: 4px;
+  background-color: var(--shimmer-color);
+}
+
+.shimmer-card p:last-child {
+  width: 60%;
 }

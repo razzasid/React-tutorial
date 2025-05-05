@@ -18,8 +18,10 @@ function CountriesContainer({ query }) {
     <CountryListShimmer />
   ) : (
     <div className="countries-container">
-      {CountriesData.filter((country) =>
-        country.name.common.toLowerCase().includes(query)
+      {CountriesData.filter(
+        (country) =>
+          country.name.common.toLowerCase().includes(query) ||
+          country.region.toLowerCase().includes(query)
       ).map((country) => (
         <CountryCard
           key={country.name.common}
