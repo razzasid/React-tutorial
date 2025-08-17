@@ -33,8 +33,34 @@ function ExpenseForm({ setExpenses }) {
     amount: 0,
   });
 
+  //validate form
+  const [errors, setErrors] = useState({});
+
+  const validate = (formData) => {
+    const errorsData = {};
+
+    if (!formData.title) {
+      errorsData.title = "Title is required";
+    }
+    if (!formData.category) {
+      errorsData.category = "Category is required";
+    }
+    if (!formData.amount) {
+      errorsData.amount = "Amount is required";
+    }
+
+    setErrors(errorsData);
+    return errorsData;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const validateResult = validate(expense);
+    console.log(validate(expense));
+
+    console.log(Object.keys(validateResult).length);
+    if (Object.keys(validateResult).length) return;
 
     //State-method
 
@@ -76,33 +102,34 @@ function ExpenseForm({ setExpenses }) {
   //     return data;
   //   };
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setExpense((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+    setErrors({});
+  };
+
   return (
     <form onSubmit={handleSubmit} className="expense-form">
       <div className="input-container">
         <label htmlFor="title">Title</label>
         <input
           // ref={titleRef}
-          onChange={(e) =>
-            setExpense((prevState) => ({
-              ...prevState,
-              title: e.target.value,
-            }))
-          }
+          onChange={handleChange}
           value={expense.title}
           name="title"
           id="title"
         />
+        <p className="error">{errors.title}</p>
       </div>
       <div className="input-container">
         <label htmlFor="category">Category</label>
         <select
           // ref={categoryRef}
-          onChange={(e) =>
-            setExpense((prevState) => ({
-              ...prevState,
-              category: e.target.value,
-            }))
-          }
+          onChange={handleChange}
           value={expense.category}
           name="category"
           id="category"
@@ -114,21 +141,18 @@ function ExpenseForm({ setExpenses }) {
           <option value="Education">Education</option>
           <option value="Medicine">Medicine</option>
         </select>
+        <p className="error">{errors.category}</p>
       </div>
       <div className="input-container">
         <label htmlFor="amount">Amount</label>
         <input
           // ref={amountRef}
-          onChange={(e) =>
-            setExpense((prevState) => ({
-              ...prevState,
-              amount: Number(e.target.value),
-            }))
-          }
+          onChange={handleChange}
           value={expense.amount}
           name="amount"
           id="amount"
         />
+        <p className="error">{errors.amount}</p>
       </div>
       <button className="add-btn">Add</button>
     </form>
