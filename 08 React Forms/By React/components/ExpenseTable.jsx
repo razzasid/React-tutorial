@@ -1,18 +1,20 @@
 import { useState } from "react";
+import { useFilter } from "../hooks/useFilter";
 
 function ExpenseTable({ expenses }) {
-  const [category, setCategory] = useState("all");
-  //   const [totalAmount, setTotalAmount] = useState(0);
+  // const [category, setCategory] = useState("all");
 
-  const filteredExpenses =
-    category === "all"
-      ? expenses
-      : expenses.filter(
-          (item) => item.category.toLowerCase() === category.toLowerCase()
-        );
+  const [filteredData, setQuery] = useFilter(expenses, (data) => data.category);
 
-  const totalAmount = filteredExpenses.reduce(
-    (sum, item) => sum + item.amount,
+  // const filteredData =
+  //   category === "all"
+  //     ? expenses
+  //     : expenses.filter((item) =>
+  //         item.category.toLowerCase().includes(category.toLowerCase())
+  //       );
+
+  const totalAmount = filteredData.reduce(
+    (sum, current) => sum + current.amount,
     0
   );
 
@@ -22,8 +24,8 @@ function ExpenseTable({ expenses }) {
         <tr>
           <th>Title</th>
           <th>
-            <select onChange={(e) => setCategory(e.target.value)}>
-              <option value="all">All</option>
+            <select onChange={(e) => setQuery(e.target.value.toLowerCase())}>
+              <option value="">All</option>
               <option value="grocery">Grocery</option>
               <option value="clothes">Clothes</option>
               <option value="bills">Bills</option>
@@ -57,7 +59,7 @@ function ExpenseTable({ expenses }) {
         </tr>
       </thead>
       <tbody>
-        {filteredExpenses.map(({ id, title, category, amount }) => (
+        {filteredData.map(({ id, title, category, amount }) => (
           <tr key={id}>
             <td>{title}</td>
             <td>{category}</td>

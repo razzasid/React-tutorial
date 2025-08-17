@@ -1,4 +1,5 @@
 function Input({ value, id, onChange, label, name, error }) {
+
   return (
     <div className="input-container">
       <label htmlFor={id}>{label}</label>

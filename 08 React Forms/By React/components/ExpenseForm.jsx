@@ -33,7 +33,7 @@ function ExpenseForm({ setExpenses }) {
     title: "",
     category: "",
     amount: 0,
-    email: "",
+    // email: "",
   });
 
   //validate form
@@ -49,13 +49,13 @@ function ExpenseForm({ setExpenses }) {
       { required: true, message: "Please enter an amount" },
       { isNumber: true, message: "Please enter a number" },
     ],
-    email: [
-      { required: true, message: "Please enter an email" },
-      {
-        pattern: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
-        message: "Please enter a valid email",
-      },
-    ],
+    // email: [
+    //   { required: true, message: "Please enter an email" },
+    //   {
+    //     pattern: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+    //     message: "Please enter a valid email",
+    //   },
+    // ],
   };
 
   const validate = (formData) => {
@@ -79,7 +79,7 @@ function ExpenseForm({ setExpenses }) {
           return true;
         }
 
-        if (rule.isNumber && !Number(value)) {
+        if (rule.isNumber && isNaN(Number(value))) {
           errorsData[key] = rule.message;
           return true;
         }
@@ -144,7 +144,7 @@ function ExpenseForm({ setExpenses }) {
 
     setExpense((prevState) => ({
       ...prevState,
-      [name]: value,
+      [name]: name === "amount" ? Number(value) : value,
     }));
     setErrors({});
   };
@@ -177,7 +177,7 @@ function ExpenseForm({ setExpenses }) {
         onChange={handleChange}
         error={errors.amount}
       />
-
+      {/* 
       <Input
         label="Email"
         id="email"
@@ -185,7 +185,7 @@ function ExpenseForm({ setExpenses }) {
         value={expense.email}
         onChange={handleChange}
         error={errors.email}
-      />
+      /> */}
       <button className="add-btn">Add</button>
     </form>
   );
