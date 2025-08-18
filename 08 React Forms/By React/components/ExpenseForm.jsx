@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import Input from "./Input";
 import Select from "./Select";
+import useAppContext from "../contexts/useAppContext";
 
 function ExpenseForm({ setExpenses }) {
   //   const [title, setTitle] = useState("");
@@ -29,12 +30,8 @@ function ExpenseForm({ setExpenses }) {
   // });
 
   //Component re-render everytime we change this state variable
-  const [expense, setExpense] = useState({
-    title: "",
-    category: "",
-    amount: 0,
-    // email: "",
-  });
+  const { expense, setExpense, editingRowId, setEditingRowId } =
+    useAppContext();
 
   //validate form
   const [errors, setErrors] = useState({});
@@ -42,7 +39,7 @@ function ExpenseForm({ setExpenses }) {
   const validationConfig = {
     title: [
       { required: true, message: "Please enter a title" },
-      { minLength: 5, message: "Title shoudld be atleast 5 characters long" },
+      { minLength: 2, message: "Title shoudld be atleast 5 characters long" },
     ],
     category: [{ required: true, message: "Please select a category" }],
     amount: [
@@ -70,7 +67,7 @@ function ExpenseForm({ setExpenses }) {
           errorsData[key] = rule.message;
           return true;
         }
-        if (rule.minLength && value.length < 5) {
+        if (rule.minLength && value.length < rule.minLength) {
           errorsData[key] = rule.message;
           return true;
         }
@@ -99,6 +96,24 @@ function ExpenseForm({ setExpenses }) {
     // console.log(Object.keys(validateResult).length);
     if (Object.keys(validateResult).length) return;
 
+    if (editingRowId) {
+      setExpenses((prevState) =>
+        prevState.map((prevExpense) => {
+          if (prevExpense.id === editingRowId) {
+            return { ...expense, id: editingRowId };
+          }
+          return prevExpense;
+        })
+      );
+      setExpense({
+        title: "",
+        category: "",
+        amount: "",
+      });
+      setEditingRowId("");
+      return;
+    }
+
     //State-method
 
     setExpenses((prevState) => [
@@ -106,6 +121,11 @@ function ExpenseForm({ setExpenses }) {
       { ...expense, id: crypto.randomUUID() },
     ]);
 
+    setExpense({
+      title: "",
+      category: "",
+      amount: "",
+    });
     //UseRef - method
 
     // setExpenses((prevState) => [
@@ -144,7 +164,7 @@ function ExpenseForm({ setExpenses }) {
 
     setExpense((prevState) => ({
       ...prevState,
-      [name]: name === "amount" ? Number(value) : value,
+      [name]: value,
     }));
     setErrors({});
   };
@@ -186,7 +206,7 @@ function ExpenseForm({ setExpenses }) {
         onChange={handleChange}
         error={errors.email}
       /> */}
-      <button className="add-btn">Add</button>
+      <button className="add-btn">{editingRowId ? "Save" : "Add"}</button>
     </form>
   );
 }
