@@ -1,12 +1,12 @@
-import { useState } from "react";
 import "./App.css";
 import ExpenseForm from "../components/expenseForm";
 import ExpenseTable from "../components/ExpenseTable";
 import expenseData from "../expenseData";
 import { AppProvider } from "../contexts/useAppContext";
+import { useLocalStorage } from "../hooks/useLocalStorage";
 
 function App() {
-  const [expenses, setExpenses] = useState(expenseData);
+  const [expenses, setExpenses] = useLocalStorage("expenses", expenseData);
 
   return (
     <AppProvider>
